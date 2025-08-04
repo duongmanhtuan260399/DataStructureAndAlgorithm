@@ -4,6 +4,7 @@
 # Python file to hold all sorting methods
 #
 
+# 1)
 def bubbleSort(A):
     #Outer loop:  len(A) - 1 pass
     for n in range(len(A) - 1):
@@ -21,7 +22,7 @@ def bubbleSort(A):
     print(f"Sorted array: {A}")
     return A
 
-
+# 2)
 def insertionSort(A):
     # Loop through the array
     for i in range(1,len(A)):
@@ -34,7 +35,7 @@ def insertionSort(A):
     print(f"Sorted array: {A}")
     return A
 
-
+# 3)
 def selectionSort(A):
     # Loop through the array
     for i in range(len(A)):
