@@ -1,39 +1,45 @@
-def towers_of_hanoi_indented(n, source_rod, destination_rod, auxiliary_rod, level=1):
+def towers_of_hanoi(n, source, destination, middle, level=1):
+    """
+    Solves the Towers of Hanoi problem and returns the total number of moves.
+    """
     # Set the indentation based on the current recursion level.
     indent = "    " * (level - 1)
 
-    # The base case for the recursion
+    # The base case for the recursion: moving 1 disk is 1 move.
     if n == 1:
         print(f"{indent}Recursion Level={level}")
-        print(f"{indent}Moving Disk 1 from Source {source_rod} to Destination {destination_rod}")
-        print(f"{indent}n=1, src={source_rod}, dest={destination_rod}")
-        return
+        print(f"{indent}Moving Disk 1 from {source} to {destination}")
+        print(f"{indent}n=1, src={source}, dest={destination}")
+        return 1
 
-    # 1. Move n-1 disks from the source to the auxiliary rod.
-    # We increase the level for the recursive call.
-    towers_of_hanoi_indented(n - 1, source_rod, auxiliary_rod, destination_rod, level + 1)
+    total_moves = 0
+
+    # 1. Move n-1 disks from the source to the middle.
+    total_moves += towers_of_hanoi(n - 1, source, middle, destination, level + 1)
 
     # 2. Move the nth (largest) disk from the source to the destination rod.
-    # This action happens at the current recursion level.
     print(f"{indent}Recursion Level={level}")
-    print(f"{indent}Moving Disk {n} from Source {source_rod} to Destination {destination_rod}")
-    print(f"{indent}n={n}, src={source_rod}, dest={destination_rod}")
+    print(f"{indent}Moving Disk {n} from {source} to {destination}")
+    print(f"{indent}n={n}, src={source}, dest={destination}")
+    total_moves += 1
 
-    # 3. Move the n-1 disks from the auxiliary rod to the destination rod.
-    # We increase the level again for this recursive call.
-    towers_of_hanoi_indented(n - 1, auxiliary_rod, destination_rod, source_rod, level + 1)
+    # 3. Move the n-1 disks from the middle rod to the destination rod.
+    total_moves += towers_of_hanoi(n - 1, middle, destination, source, level + 1)
+
+    # Return the accumulated moves for this level and its children.
+    return total_moves
 
 
 # --- Driver Code ---
 if __name__ == "__main__":
     # Set the number of disks and the names for the rods.
-    # Using numbers as strings to match the sample output.
-    num_disks = 4
+    num_disks = 3
     source_peg = '1'
     destination_peg = '3'
-    auxiliary_peg = '2'
+    middle_peg = '2'
 
-    # Initial call to the function starts at level 1.
-    towers_of_hanoi_indented(num_disks, source_peg, destination_peg, auxiliary_peg)
+    # Initial call to the function, which now returns the total moves.
+    move_count = towers_of_hanoi(num_disks, source_peg, destination_peg, middle_peg)
 
-    print("... # There are 7 moves for this problem.")
+    # Print the final count using the variable.
+    print(f"... # There are {move_count} moves for this problem.")
