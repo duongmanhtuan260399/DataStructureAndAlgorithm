@@ -11,35 +11,43 @@ def decimal_to_base_recursive(n, base):
     digits = "0123456789ABCDEF"
 
     if n < 0:
-        return "-" + decimal_to_base_recursive(abs(n), base)
-    if n < base:
-        return digits[n]
+        # Handles negative numbers
+        result = "-" + decimal_to_base_recursive(abs(n), base)
+    elif n < base:
+        # Base case for the recursion
+        result = digits[n]
     else:
-        return decimal_to_base_recursive(n // base, base) + digits[n % base]
+        # Recursive step
+        result = decimal_to_base_recursive(n // base, base) + digits[n % base]
+
+    return result
 
 
 def decimal_to_base_iterative(n, base):
     if base < 2 or base > 16:
         raise ValueError("Base must be between 2 and 16")
 
+    # Handle the n == 0 edge case separately
     if n == 0:
-        return "0"
+        final_string = "0"
+    else:
+        # Proceed with conversion for non-zero numbers
+        is_negative = n < 0
+        if is_negative:
+            n = abs(n)
 
-    is_negative = n < 0
-    if is_negative:
-        n = abs(n)
+        digits = "0123456789ABCDEF"
+        converted_string = ""
 
-    digits = "0123456789ABCDEF"
-    converted_string = ""
+        while n > 0:
+            remainder = n % base
+            converted_string = digits[remainder] + converted_string
+            n = n // base
 
-    while n > 0:
-        remainder = n % base
-        converted_string = digits[remainder] + converted_string
-        n = n // base
+        # Use a ternary to add the sign if necessary
+        final_string = "-" + converted_string if is_negative else converted_string
 
-    if is_negative:
-        return "-" + converted_string
-    return converted_string
+    return final_string
 
 
 def run_comparison():

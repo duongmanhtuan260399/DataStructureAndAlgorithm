@@ -1,29 +1,25 @@
 import sys
 import common
+
+
 def fibonacci_recursive(n):
     if n < 0:
         raise ValueError("number cannot be negative")
-    elif n == 0:
-        return 0  # Base case: The 0th Fibonacci number is 0
-    elif n == 1:
-        return 1  # Base case: The 1st Fibonacci number is 1
-    else:
-        # Recursive step: Sum of the two preceding Fibonacci numbers
-        return fibonacci_recursive(n - 1) + fibonacci_recursive(n - 2)
+    return n if n <= 1 else fibonacci_recursive(n - 1) + fibonacci_recursive(n - 2)
 
-def fib (n):
+
+def fib(n):
     if n < 0:
         raise ValueError("number cannot be negative")
-    if n == 0:
-        return 0
-    else:
-        x = 0
-        y = 1
-        for i in range(1,n):
-            z = (x + y)
-            x = y
-            y = z
-        return y
+
+    # Initialize the first two numbers in the sequence
+    current, next_num = 0, 1
+
+    # Loop n times to advance to the nth number
+    for _ in range(n):
+        current, next_num = next_num, current + next_num
+
+    return current
 
 def run_comparison():
     n_values = list(range(5, 35, 5))

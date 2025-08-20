@@ -30,10 +30,26 @@ def towers_of_hanoi(n, source, destination, middle, level=1):
     return total_moves
 
 
+def get_positive_number():
+    valid_number = None
+    while valid_number is None:
+        try:
+            n = int(input("Type a number: "))
+            if n > 0:
+                valid_number = n
+            else:
+                print("Invalid input. The number must be positive.")
+        except ValueError:
+            print("Invalid input. Please enter a whole number.")
+
+    # The single return statement executes only after the loop ends
+    return valid_number
+
+
 # --- Driver Code ---
 if __name__ == "__main__":
     # Set the number of disks and the names for the rods.
-    num_disks = 3
+    num_disks = get_positive_number()
     source_peg = '1'
     destination_peg = '3'
     middle_peg = '2'

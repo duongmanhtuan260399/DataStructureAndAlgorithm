@@ -7,13 +7,15 @@ from functools import partial
 
 # Recursive GCD (Euclidean algorithm)
 def gcd_recursive(a, b):
-    if b == 0:
-        return a
-    return gcd_recursive(b, a % b)
+    if a<0 or b<0:
+        raise ValueError('a and b must be non-negative')
+    return a if b == 0 else gcd_recursive(b, a % b)
 
 
 # Iterative GCD (Euclidean algorithm)
 def gcd_iterative(a, b):
+    if a<0 or b<0:
+        raise ValueError('a and b must be non-negative')
     while b != 0:
         a, b = b, a % b
     return a

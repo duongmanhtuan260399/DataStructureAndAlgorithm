@@ -4,11 +4,12 @@ import matplotlib.pyplot as plt
 import common
 
 def factorial_recursive(n):
-    if n<0:
+    if n < 0:
         raise ValueError("number cannot be negative")
-    if n <= 1:
-        return 1
-    return n * factorial_recursive(n - 1)
+    result = 1
+    if n > 1:
+        result = n * factorial_recursive(n - 1)
+    return result
 
 def factorial_iterative(n):
     if n<0:
