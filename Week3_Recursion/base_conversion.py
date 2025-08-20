@@ -4,16 +4,24 @@ import matplotlib.pyplot as plt
 import common
 
 
-def decimal_to_hex_recursive(n):
+def decimal_to_base_recursive(n, base):
+    if base < 2 or base > 16:
+        raise ValueError("Base must be between 2 and 16")
+
+    digits = "0123456789ABCDEF"
+
     if n < 0:
-        return "-" + decimal_to_hex_recursive(abs(n))
-    if n < 16:
-        return "0123456789ABCDEF"[n]
+        return "-" + decimal_to_base_recursive(abs(n), base)
+    if n < base:
+        return digits[n]
     else:
-        return decimal_to_hex_recursive(n // 16) + "0123456789ABCDEF"[n % 16]
+        return decimal_to_base_recursive(n // base, base) + digits[n % base]
 
 
-def decimal_to_hex_iterative(n):
+def decimal_to_base_iterative(n, base):
+    if base < 2 or base > 16:
+        raise ValueError("Base must be between 2 and 16")
+
     if n == 0:
         return "0"
 
@@ -21,35 +29,50 @@ def decimal_to_hex_iterative(n):
     if is_negative:
         n = abs(n)
 
-    hex_chars = "0123456789ABCDEF"
-    hex_string = ""
+    digits = "0123456789ABCDEF"
+    converted_string = ""
 
     while n > 0:
-        remainder = n % 16
-        hex_string = hex_chars[remainder] + hex_string
-        n = n // 16
+        remainder = n % base
+        converted_string = digits[remainder] + converted_string
+        n = n // base
 
     if is_negative:
-        return "-" + hex_string
-    return hex_string
+        return "-" + converted_string
+    return converted_string
+
 
 def run_comparison():
+    while True:
+        try:
+            base = int(input("Enter base (2-16) for performance comparison: "))
+            if 2 <= base <= 16:
+                break
+            print("Base must be between 2 and 16.")
+        except ValueError:
+            print("Invalid base. Please enter an integer between 2 and 16.")
+
     n_values = list(range(500, 10000, 500))
 
     # Use the common helper function to compare and plot the performance.
     common.compare_functions(
-        func1=decimal_to_hex_recursive,
-        func2=decimal_to_hex_iterative,
-        func1_label="Recursive Hex Conversion",
-        func2_label="Iterative Hex Conversion",
+        func1=lambda n: decimal_to_base_recursive(n, base),
+        func2=lambda n: decimal_to_base_iterative(n, base),
+        func1_label=f"Recursive Base-{base} Conversion",
+        func2_label=f"Iterative Base-{base} Conversion",
         n_values=n_values
     )
 
+
 def run_single():
     try:
+        base = int(input("Enter base (2-16): "))
+        if base < 2 or base > 16:
+            print("Base must be between 2 and 16.")
+            return run_single()
         a = int(input("Enter a number: "))
-        print(f"Recrusive Hex Conversion: {decimal_to_hex_recursive(a)}")
-        print(f"Iterative Hex Conversion: {decimal_to_hex_iterative(a)}")
+        print(f"Recursive Base-{base} Conversion: {decimal_to_base_recursive(a, base)}")
+        print(f"Iterative Base-{base} Conversion: {decimal_to_base_iterative(a, base)}")
     except ValueError:
         print("Invalid input")
         run_single()
