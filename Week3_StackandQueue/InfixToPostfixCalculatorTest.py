@@ -25,7 +25,7 @@ class InfixToPostfixCalculatorTest(unittest.TestCase):
             ("4 * 3", 12.0),
             ("10 / 2", 5.0),
             ("2 + 3 * 4", 14.0),
-            ("(2 + 3) * 4", 20.0),
+            ("( 2 + 3 ) * 4", 20.0),
         ]
         
         for infix, expected_result in test_cases:
@@ -36,104 +36,95 @@ class InfixToPostfixCalculatorTest(unittest.TestCase):
     def test_basic_operations(self):
         """Test basic arithmetic operations."""
         test_cases = [
-            ("2 + 3", "2 3 +", 5.0),
-            ("5 - 2", "5 2 -", 3.0),
-            ("4 * 3", "4 3 *", 12.0),
-            ("10 / 2", "10 2 /", 5.0),
+            ("2 + 3", 5.0),
+            ("5 - 2", 3.0),
+            ("4 * 3", 12.0),
+            ("10 / 2", 5.0),
         ]
         
-        for infix, expected_postfix, expected_result in test_cases:
+        for infix, expected_result in test_cases:
             with self.subTest(infix=infix):
-                postfix, result = self.calculator.calculate(infix)
-                self.assertEqual(postfix, expected_postfix)
+                result = self.calculator.solve(infix)
                 self.assertEqual(result, expected_result)
 
     def test_operator_precedence(self):
         """Test operator precedence handling."""
         test_cases = [
-            ("2 + 3 * 4", "2 3 4 * +", 14.0),
-            ("3 * 4 + 2", "3 4 * 2 +", 14.0),
-            ("10 / 2 + 3 * 4", "10 2 / 3 4 * +", 17.0),
-            ("2 + 3 * 4 - 1", "2 3 4 * + 1 -", 13.0),
+            ("2 + 3 * 4", 14.0),
+            ("3 * 4 + 2", 14.0),
+            ("10 / 2 + 3 * 4", 17.0),
+            ("2 + 3 * 4 - 1", 13.0),
         ]
         
-        for infix, expected_postfix, expected_result in test_cases:
+        for infix, expected_result in test_cases:
             with self.subTest(infix=infix):
-                postfix, result = self.calculator.calculate(infix)
-                self.assertEqual(postfix, expected_postfix)
+                result = self.calculator.solve(infix)
                 self.assertEqual(result, expected_result)
 
     def test_parentheses(self):
         """Test parentheses handling."""
         test_cases = [
-            ("(2 + 3) * 4", "2 3 + 4 *", 20.0),
-            ("2 + (3 * 4)", "2 3 4 * +", 14.0),
-            ("(10 / 2) + (3 * 4)", "10 2 / 3 4 * +", 17.0),
-            ("((2 + 3) * 4) + 1", "2 3 + 4 * 1 +", 21.0),
+            ("( 2 + 3 ) * 4", 20.0),
+            ("2 + ( 3 * 4 )", 14.0),
+            ("( 10 / 2 ) + ( 3 * 4 )", 17.0),
+            ("( ( 2 + 3 ) * 4 ) + 1", 21.0),
         ]
         
-        for infix, expected_postfix, expected_result in test_cases:
+        for infix, expected_result in test_cases:
             with self.subTest(infix=infix):
-                postfix, result = self.calculator.calculate(infix)
-                self.assertEqual(postfix, expected_postfix)
+                result = self.calculator.solve(infix)
                 self.assertEqual(result, expected_result)
 
     def test_complex_expressions(self):
         """Test complex mathematical expressions."""
         test_cases = [
-            ("2 + 3 * 4 - 6 / 2", "2 3 4 * + 6 2 / -", 11.0),
-            ("(2 + 3) * (4 - 1)", "2 3 + 4 1 - *", 15.0),
-            ("10 / (2 + 3) * 4", "10 2 3 + / 4 *", 8.0),
+            ("2 + 3 * 4 - 6 / 2", 11.0),
+            ("( 2 + 3 ) * ( 4 - 1 )", 15.0),
+            ("10 / ( 2 + 3 ) * 4", 8.0),
         ]
         
-        for infix, expected_postfix, expected_result in test_cases:
+        for infix, expected_result in test_cases:
             with self.subTest(infix=infix):
-                postfix, result = self.calculator.calculate(infix)
-                self.assertEqual(postfix, expected_postfix)
+                result = self.calculator.solve(infix)
                 self.assertEqual(result, expected_result)
 
     def test_decimal_numbers(self):
         """Test decimal number handling."""
         test_cases = [
-            ("3.5 + 2.5", "3.5 2.5 +", 6.0),
-            ("10.5 / 2.5", "10.5 2.5 /", 4.2),
-            ("2.5 * 3.2 + 1.5", "2.5 3.2 * 1.5 +", 9.5),
+            ("3.5 + 2.5", 6.0),
+            ("10.5 / 2.5", 4.2),
+            ("2.5 * 3.2 + 1.5", 9.5),
         ]
         
-        for infix, expected_postfix, expected_result in test_cases:
+        for infix, expected_result in test_cases:
             with self.subTest(infix=infix):
-                postfix, result = self.calculator.calculate(infix)
-                self.assertEqual(postfix, expected_postfix)
+                result = self.calculator.solve(infix)
                 self.assertAlmostEqual(result, expected_result, places=10)
 
     def test_multi_digit_numbers(self):
         """Test multi-digit number handling."""
         test_cases = [
-            ("123 + 456", "123 456 +", 579.0),
-            ("1000 / 100", "1000 100 /", 10.0),
-            ("25 * 40 + 15", "25 40 * 15 +", 1015.0),
+            ("123 + 456", 579.0),
+            ("1000 / 100", 10.0),
+            ("25 * 40 + 15", 1015.0),
         ]
         
-        for infix, expected_postfix, expected_result in test_cases:
+        for infix, expected_result in test_cases:
             with self.subTest(infix=infix):
-                postfix, result = self.calculator.calculate(infix)
-                self.assertEqual(postfix, expected_postfix)
+                result = self.calculator.solve(infix)
                 self.assertEqual(result, expected_result)
 
     def test_spaces_handling(self):
-        """Test that spaces are handled correctly."""
-        test_cases = [
-            ("2+3", "2 3 +", 5.0),
-            ("2 +3", "2 3 +", 5.0),
-            ("2+ 3", "2 3 +", 5.0),
-            ("  2  +  3  ", "2 3 +", 5.0),
-        ]
+        """Test that spaces must delimit tokens as per notes."""
+        # Valid with extra spaces between tokens
+        result = self.calculator.solve("  2   +   3  ")
+        self.assertEqual(result, 5.0)
         
-        for infix, expected_postfix, expected_result in test_cases:
-            with self.subTest(infix=infix):
-                postfix, result = self.calculator.calculate(infix)
-                self.assertEqual(postfix, expected_postfix)
-                self.assertEqual(result, expected_result)
+        # Invalid cases without proper spaces
+        for bad in ["2+3", "2 +3", "2+ 3"]:
+            with self.subTest(infix=bad):
+                with self.assertRaises(ValueError):
+                    self.calculator.solve(bad)
 
     def test_division_by_zero(self):
         """Test division by zero error handling."""
@@ -144,11 +135,11 @@ class InfixToPostfixCalculatorTest(unittest.TestCase):
     def test_mismatched_parentheses(self):
         """Test mismatched parentheses error handling."""
         with self.assertRaises(ValueError) as context:
-            self.calculator.solve("(2 + 3")
+            self.calculator.solve("( 2 + 3")
         self.assertIn("Mismatched parentheses", str(context.exception))
         
         with self.assertRaises(ValueError) as context:
-            self.calculator.solve("2 + 3)")
+            self.calculator.solve("2 + 3 )")
         self.assertIn("Mismatched parentheses", str(context.exception))
 
     def test_invalid_expression_insufficient_operands(self):
@@ -180,9 +171,9 @@ class InfixToPostfixCalculatorTest(unittest.TestCase):
         test_cases = [
             ("2 + 3", ["2", "+", "3"]),
             ("10.5 * 2", ["10.5", "*", "2"]),
-            ("(2 + 3) * 4", ["(", "2", "+", "3", ")", "*", "4"]),
+            ("( 2 + 3 ) * 4", ["(", "2", "+", "3", ")", "*", "4"]),
             ("  2  +  3  ", ["2", "+", "3"]),
-            ("123+456", ["123", "+", "456"]),
+            ("123 + 456", ["123", "+", "456"]),
         ]
         
         for expression, expected_tokens in test_cases:
@@ -275,9 +266,8 @@ class InfixToPostfixCalculatorTest(unittest.TestCase):
         # Verify it's a CircularQueue
         self.assertIsInstance(postfix_queue, CircularQueue)
         
-        # Convert to string for verification
-        postfix_str = self.calculator._queue_to_string(postfix_queue)
-        self.assertEqual(postfix_str, "2 3 4 * +")
+        # Convert to string for verification using queue's __str__
+        self.assertEqual(str(postfix_queue), "[2 3 4 * +]")
 
     def test_evaluate_postfix_method(self):
         """Test the _evaluatePostfix method directly."""
@@ -305,9 +295,8 @@ class InfixToPostfixCalculatorTest(unittest.TestCase):
         queue.enqueue(3.0)
         queue.enqueue("+")
         
-        # Convert to string
-        result = self.calculator._queue_to_string(queue)
-        self.assertEqual(result, "2 3 +")
+        # Convert to string via __str__
+        self.assertEqual(str(queue), "[2 3 +]")
 
 
 if __name__ == "__main__":

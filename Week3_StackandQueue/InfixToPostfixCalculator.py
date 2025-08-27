@@ -16,8 +16,9 @@ Examples:
     Result: 20
 """
 
-from DSAStack import DSAStack
 from DSAQueue import CircularQueue
+from DSAStack import DSAStack
+import sys
 
 
 class InfixToPostfixCalculator:
@@ -49,6 +50,7 @@ class InfixToPostfixCalculator:
         try:
             # Convert infix to postfix and store in queue
             postfix_queue = self._parseInfixToPostfix(equation)
+            print(f"Postfix (after parse): {postfix_queue}")
             
             # Evaluate the postfix expression
             result = self._evaluatePostfix(postfix_queue)
@@ -207,39 +209,18 @@ class InfixToPostfixCalculator:
 
     def _tokenize(self, expression):
         """
-        Convert expression string to list of tokens.
-        Handles multi-digit numbers and decimal numbers.
-        
-        Args:
-            expression (str): The expression string
-            
-        Returns:
-            list: List of tokens (numbers and operators)
+        Convert expression string to list of tokens, assuming space-delimited input.
         """
-        tokens = []
-        current_number = ""
-        
-        for char in expression:
-            if char.isspace():
-                # Skip spaces
-                continue
-            elif self._is_operand(char):
-                # Build multi-digit or decimal number
-                current_number += char
+        # Split on single space as per notes; filter out empties if multiple spaces present
+        raw_tokens = [tok for tok in expression.split(' ') if tok != '']
+        # Validate: tokens must be numbers, operators, or parentheses
+        validated = []
+        for tok in raw_tokens:
+            if self._is_operand_token(tok) or self._is_operator(tok) or tok in ['(', ')']:
+                validated.append(tok)
             else:
-                # If we have a number being built, add it to tokens
-                if current_number:
-                    tokens.append(current_number)
-                    current_number = ""
-                
-                # Add operator or parenthesis
-                tokens.append(char)
-        
-        # Don't forget the last number if there is one
-        if current_number:
-            tokens.append(current_number)
-        
-        return tokens
+                raise ValueError(f"Unknown operator: {tok}")
+        return validated
 
     def _is_operator(self, char):
         """Check if a character is an operator."""
@@ -257,138 +238,24 @@ class InfixToPostfixCalculator:
         except ValueError:
             return False
 
-    def calculate(self, infix_expression):
-        """
-        Calculate the result of an infix expression.
-        This is a convenience method that provides the same interface as before.
-        
-        Args:
-            infix_expression (str): The infix expression to evaluate
-            
-        Returns:
-            tuple: (postfix_expression, result)
-        """
-        try:
-            # Convert to postfix queue
-            postfix_queue = self._parseInfixToPostfix(infix_expression)
-            
-            # Create a string representation of postfix for display
-            postfix_str = self._queue_to_string(postfix_queue)
-            
-            # Create a copy of the queue for evaluation
-            eval_queue = CircularQueue()
-            temp_queue = CircularQueue()
-            
-            # Copy items to both queues
-            while not postfix_queue.is_empty():
-                item = postfix_queue.dequeue()
-                eval_queue.enqueue(item)
-                temp_queue.enqueue(item)
-            
-            # Restore original queue
-            while not temp_queue.is_empty():
-                postfix_queue.enqueue(temp_queue.dequeue())
-            
-            # Evaluate postfix
-            result = self._evaluatePostfix(eval_queue)
-            
-            return postfix_str, result
-            
-        except Exception as e:
-            raise ValueError(f"Error evaluating expression: {e}")
 
-    def _queue_to_string(self, queue):
-        """
-        Convert a queue of postfix terms to a string representation.
-        
-        Args:
-            queue (CircularQueue): Queue containing postfix terms
-            
-        Returns:
-            str: String representation of postfix expression
-        """
-        # Create a temporary queue to iterate through the terms
-        temp_queue = CircularQueue()
-        terms = []
-        
-        # Copy all items from queue to temp_queue and collect terms
-        while not queue.is_empty():
-            item = queue.dequeue()
-            temp_queue.enqueue(item)
-            if isinstance(item, (int, float)):
-                # Convert to string without decimal if it's a whole number
-                if item == int(item):
-                    terms.append(str(int(item)))
-                else:
-                    terms.append(str(item))
-            else:
-                terms.append(item)
-        
-        # Restore the original queue
-        while not temp_queue.is_empty():
-            queue.enqueue(temp_queue.dequeue())
-        
-        return ' '.join(terms)
 
 
 def main():
-    """Main function to run the calculator interactively."""
+    """Main function to run the calculator."""
     calculator = InfixToPostfixCalculator()
     
-    print("Infix to Postfix Calculator")
-    print("=" * 40)
-    print("Enter mathematical expressions in infix notation.")
-    print("Supported operations: +, -, *, /")
-    print("Use parentheses for grouping.")
-    print("Enter 'quit' to exit.")
-    print()
+    equation = input("Type your equation: ").strip()
     
-    # Example expressions
-    examples = [
-        "2 + 3 * 4",
-        "(2 + 3) * 4",
-        "10 / 2 + 3 * 4",
-        "3.5 * 2 + 1.5"
-    ]
+    if not equation:
+        print("No expression provided.")
+        return
     
-    print("Examples:")
-    for example in examples:
-        try:
-            postfix, result = calculator.calculate(example)
-            print(f"  {example} = {result} (Postfix: {postfix})")
-        except ValueError as e:
-            print(f"  {example} = Error: {e}")
-    print()
-    
-    while True:
-        try:
-            # Get input from user
-            expression = input("Enter expression: ").strip()
-            
-            if expression.lower() in ['quit', 'exit', 'q']:
-                print("Goodbye!")
-                break
-            
-            if not expression:
-                continue
-            
-            # Calculate result using the new solve method
-            result = calculator.solve(expression)
-            
-            # Also get postfix representation for display
-            postfix, _ = calculator.calculate(expression)
-            
-            # Display results
-            print(f"Postfix: {postfix}")
-            print(f"Result: {result}")
-            print()
-            
-        except ValueError as e:
-            print(f"Error: {e}")
-            print()
-        except KeyboardInterrupt:
-            print("\nGoodbye!")
-            break
+    try:
+        result = calculator.solve(equation)
+        print(f"Result: {result}")
+    except ValueError as e:
+        print(f"Error: {e}")
 
 
 if __name__ == "__main__":

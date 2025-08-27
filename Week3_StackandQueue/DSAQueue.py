@@ -194,8 +194,18 @@ class ShufflingQueue(DSAQueue):
             return "[]"
 
         # Displays the queue from front to rear.
-        items = [str(self._queue[i]) for i in range(self._count)]
-        return f"[{', '.join(items)}]"
+        items = []
+        for i in range(self._count):
+            item = self._queue[i]
+            if isinstance(item, (int, float)):
+                # Convert to string without decimal if it's a whole number
+                if item == int(item):
+                    items.append(str(int(item)))
+                else:
+                    items.append(str(item))
+            else:
+                items.append(str(item))
+        return f"[{' '.join(items)}]"
 
 
 class CircularQueue(DSAQueue):
@@ -274,8 +284,16 @@ class CircularQueue(DSAQueue):
         current = self._front
         
         for i in range(self._count):
-            items.append(str(self._queue[current]))
+            item = self._queue[current]
+            if isinstance(item, (int, float)):
+                # Convert to string without decimal if it's a whole number
+                if item == int(item):
+                    items.append(str(int(item)))
+                else:
+                    items.append(str(item))
+            else:
+                items.append(str(item))
             current = (current + 1) % self._capacity
             
-        return f"[{', '.join(items)}]"
+        return f"[{' '.join(items)}]"
 
