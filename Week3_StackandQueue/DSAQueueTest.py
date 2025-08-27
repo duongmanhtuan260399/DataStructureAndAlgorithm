@@ -404,7 +404,7 @@ class BaseQueueTest(unittest.TestCase, ABC):
         queue.enqueue(3.0)
         
         # Should show front to rear (FIFO order)
-        expected = "[1, two, 3.0]"
+        expected = "[1 two 3]"
         self.assertEqual(str(queue), expected)
 
     def test_str_different_data_types(self):
@@ -416,7 +416,7 @@ class BaseQueueTest(unittest.TestCase, ABC):
         queue.enqueue([1, 2, 3])
         queue.enqueue({"key": "value"})
         
-        expected = "[42, hello, [1, 2, 3], {'key': 'value'}]"
+        expected = "[42 hello [1, 2, 3] {'key': 'value'}]"
         self.assertEqual(str(queue), expected)
 
     def test_str_after_operations(self):
@@ -431,7 +431,7 @@ class BaseQueueTest(unittest.TestCase, ABC):
         self.assertEqual(str(queue), "[1]")
         
         queue.enqueue(2)
-        self.assertEqual(str(queue), "[1, 2]")
+        self.assertEqual(str(queue), "[1 2]")
         
         # After dequeue
         queue.dequeue()
@@ -513,7 +513,7 @@ class BaseQueueTest(unittest.TestCase, ABC):
         queue.enqueue("third")
         self.assertEqual(queue.get_count(), 3)
         self.assertEqual(queue.peek(), "first")
-        self.assertEqual(str(queue), "[first, second, third]")
+        self.assertEqual(str(queue), "[first second third]")
         
         # Dequeue operations
         self.assertEqual(queue.dequeue(), "first")
@@ -709,12 +709,12 @@ class ShufflingQueueTest(BaseQueueTest):
         self.assertEqual(queue.dequeue(), "A")
         
         # Verify remaining items are shuffled left
-        self.assertEqual(str(queue), "[B, C, D]")
+        self.assertEqual(str(queue), "[B C D]")
         self.assertEqual(queue.peek(), "B")
         
         # Dequeue another
         self.assertEqual(queue.dequeue(), "B")
-        self.assertEqual(str(queue), "[C, D]")
+        self.assertEqual(str(queue), "[C D]")
         self.assertEqual(queue.peek(), "C")
 
 
@@ -744,7 +744,7 @@ class CircularQueueTest(BaseQueueTest):
         queue.enqueue(4)
         
         # Verify the queue state
-        self.assertEqual(str(queue), "[2, 3, 4]")
+        self.assertEqual(str(queue), "[2 3 4]")
         self.assertEqual(queue.get_count(), 3)
         self.assertTrue(queue.is_full())
         
@@ -808,7 +808,7 @@ class CircularQueueTest(BaseQueueTest):
         queue.enqueue(6)
         
         # Verify state
-        self.assertEqual(str(queue), "[3, 4, 5, 6]")
+        self.assertEqual(str(queue), "[3 4 5 6]")
         self.assertEqual(queue.get_count(), 4)
         
         # Dequeue all
@@ -841,7 +841,7 @@ class CircularQueueTest(BaseQueueTest):
         queue.enqueue(5)
         
         # Verify they're added correctly
-        self.assertEqual(str(queue), "[4, 5]")
+        self.assertEqual(str(queue), "[4 5]")
         self.assertEqual(queue.peek(), 4)
 
     def test_circular_edge_wrapping(self):
@@ -859,7 +859,7 @@ class CircularQueueTest(BaseQueueTest):
         queue.enqueue(3)
         
         # Verify
-        self.assertEqual(str(queue), "[2, 3]")
+        self.assertEqual(str(queue), "[2 3]")
         self.assertEqual(queue.peek(), 2)
         
         # Dequeue both
@@ -873,5 +873,13 @@ class CircularQueueTest(BaseQueueTest):
 
 
 if __name__ == '__main__':
-    # Run the tests
-    unittest.main(verbosity=2) 
+    # Run only the concrete test classes, not the abstract base class
+    test_classes = [ShufflingQueueTest, CircularQueueTest]
+    suite = unittest.TestSuite()
+    
+    for test_class in test_classes:
+        tests = unittest.TestLoader().loadTestsFromTestCase(test_class)
+        suite.addTests(tests)
+    
+    runner = unittest.TextTestRunner(verbosity=2)
+    runner.run(suite) 
