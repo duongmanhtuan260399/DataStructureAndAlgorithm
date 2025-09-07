@@ -207,7 +207,6 @@ def main():
                 print("Invalid choice. Please enter 0, 1, or 2.")
                 
         except KeyboardInterrupt:
-            print("\nGoodbye!")
             break
         except Exception as e:
             print(f"An error occurred: {e}")
