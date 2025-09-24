@@ -272,3 +272,10 @@ class DSALinkedList:
             current = current.next
         
         return False
+
+    def __iter__(self):
+        """Iterate through values from head to tail without exposing nodes."""
+        current = self._head
+        while current is not None:
+            yield current.value
+            current = current.next
