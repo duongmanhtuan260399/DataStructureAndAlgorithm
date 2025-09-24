@@ -3,7 +3,6 @@ from Week4_StackandQueue.DSAQueue import CircularQueue
 from Week4_StackandQueue.DSAStack import DSAStack
 from Week02_SimpleSort.DSAsorts import selectionSort
 
-
 class DSAGraphNode:
 
     def __init__(self, label, value=None):
@@ -51,8 +50,7 @@ class DSAGraph:
         self._vertex_count = 0
         self._edge_count = 0
 
-    # Internal: sort a DSALinkedList of comparable labels in ascending order,
-    # returning a new DSALinkedList (does not mutate the original).
+
     def _sort_labels_list(self, labels_list):
         unsorted_ll = DSALinkedList()
         for lbl in labels_list:
@@ -197,15 +195,10 @@ class DSAGraph:
             print("\t".join([labels[i]] + [str(val) for val in row]))
 
     def breadthFirstSearch(self):
-        """
-        Returns a queue T containing vertex-pair visits (v, w) in BFS order,
-        enqueued as consecutive elements: v, w.
-        """
         T = CircularQueue()
         Q = CircularQueue()
         for node in self._vertices:
             node.clearVisited()
-        # choose start vertex by alphabetical label using DSALinkedList only
         labels = DSALinkedList()
         for n in self._vertices:
             labels.insertLast(n.label)
@@ -226,7 +219,6 @@ class DSAGraph:
             Q.enqueue(start)
             while not Q.is_empty():
                 v = Q.dequeue()
-                # iterate adjacency in alphabetical order using DSALinkedList only
                 neigh_labels = DSALinkedList()
                 for n in v.getAdjacent():
                     neigh_labels.insertLast(n.label)
@@ -248,17 +240,11 @@ class DSAGraph:
         return T
 
     def depthFirstSearch(self):
-        """
-        Returns a queue T containing vertex-pair visits (v, w) in DFS order,
-        enqueued as consecutive elements: v, w.
-        """
         T = CircularQueue()
         S = DSAStack()
         # clear visited
         for node in self._vertices:
             node.clearVisited()
-        # choose a start vertex if any
-        # choose start vertex by alphabetical label using DSALinkedList only
         labels = DSALinkedList()
         for n in self._vertices:
             labels.insertLast(n.label)
@@ -275,12 +261,11 @@ class DSAGraph:
                         start = n
                         break
         if start is not None:
-            v = start
-            v.setVisited()
-            S.push(v)
+            start.setVisited()
+            S.push(start)
             while not S.is_empty():
+                v = S.top()
                 progressed = False
-                # iterate adjacency in alphabetical order using DSALinkedList only
                 neigh_labels = DSALinkedList()
                 for n in v.getAdjacent():
                     neigh_labels.insertLast(n.label)
@@ -298,11 +283,10 @@ class DSAGraph:
                         T.enqueue(w)
                         w.setVisited()
                         S.push(w)
-                        v = w
                         progressed = True
                         break
                 if not progressed:
-                    v = S.pop()
+                    S.pop()
         return T
 
 
