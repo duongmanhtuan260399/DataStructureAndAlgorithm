@@ -6,7 +6,7 @@ from Week02_SimpleSort.DSAsorts import selectionSort
 class DSAGraphNode:
 
     def __init__(self, label, value=None):
-        self.label = label
+        self.label = str(label)
         self.value = value
         self._adjacency = DSALinkedList()
         self._visited = False
@@ -14,7 +14,7 @@ class DSAGraphNode:
     def __eq__(self, other):
         if isinstance(other, DSAGraphNode):
             return self.label == other.label
-        return self.label == other
+        return self.label == str(other)
 
     def getLabel(self):
         return self.label
