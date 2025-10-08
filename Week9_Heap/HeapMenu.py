@@ -15,6 +15,7 @@ def display_main_menu():
     print("3) Display heap array")
     print("4) Size")
     print("5) Is empty?")
+    print("6) Sort heap")
     print("0) Exit")
 
 
@@ -62,6 +63,21 @@ def handle_is_empty(h: DSAHeap):
     print("Yes" if h.count == 0 else "No")
 
 
+def handle_sort(h: DSAHeap):
+    try:
+        if h.count == 0:
+            print("Heap is empty, nothing to sort.")
+            return
+        
+        print("Sorting heap...")
+        h.heapSort()
+        print("Heap sorted successfully!")
+        print("Sorted array (in descending order by priority):")
+        h.display()
+    except Exception as e:
+        print(f"Error: {e}")
+
+
 def main():
     # optional: allow custom initial capacity
     try:
@@ -76,7 +92,7 @@ def main():
     while True:
         display_main_menu()
         try:
-            choice = input("\nEnter your choice (0-5): ").strip()
+            choice = input("\nEnter your choice (0-6): ").strip()
             if choice == '0':
                 break
             elif choice == '1':
@@ -89,8 +105,10 @@ def main():
                 handle_size(heap)
             elif choice == '5':
                 handle_is_empty(heap)
+            elif choice == '6':
+                handle_sort(heap)
             else:
-                print("Invalid choice. Please enter 0-5.")
+                print("Invalid choice. Please enter 0-6.")
         except KeyboardInterrupt:
             break
         except Exception as e:
