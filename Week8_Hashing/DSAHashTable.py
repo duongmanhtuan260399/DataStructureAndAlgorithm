@@ -3,7 +3,7 @@ import numpy as np
 class DSAHashEntry:
     STATE_FREE = 0
     STATE_USED = 1
-    STATE_PREVIOUSLY_USED = 2  # Tombstone
+    STATE_PREVIOUSLY_USED = 2
 
     def __init__(self, key=None, value=None, state=STATE_FREE):
         self.key = key
@@ -50,7 +50,6 @@ class DSAHashTable:
 
     def put(self, key, value):
         self._validate_key(key)
-        # Check if we need to grow before inserting
         if (self._count + 1) / self._capacity > self.MAX_LOAD_FACTOR:
             self._resize(self._next_prime(self._capacity * 2))
 

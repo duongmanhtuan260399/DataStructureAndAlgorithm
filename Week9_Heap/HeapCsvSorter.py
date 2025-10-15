@@ -14,13 +14,6 @@ class HeapCsvSorter:
     def __init__(self):
         self.heap = DSAHeap()
 
-    def _load_into_heap_array(self, rows):
-        num_items = len(rows)
-        self.heap.heap = np.empty(num_items, dtype=object)
-        self.heap.count = num_items
-        for i, (priority, value) in enumerate(rows):
-            self.heap.heap[i] = DSAHeap.DSAHeapEntry(priority, value)
-
     def sort_file(self, input_csv_path: str, output_csv_path: str):
         self.heap = DSAHeap()
         with open(input_csv_path, "r", newline="", encoding="utf-8") as f:
