@@ -53,8 +53,6 @@ def mergeSort(A):
     return A
 
 def mergeSortRecurse(A, leftIdx, rightIdx):
-    """ Recursively divide the array and merge sorted halves
-    """
     if leftIdx < rightIdx:
         midIdx = (leftIdx + rightIdx) // 2
         mergeSortRecurse(A, leftIdx, midIdx)
@@ -107,7 +105,8 @@ def quickSort(A):
 
 def quickSortRecurse(A, leftIdx, rightIdx):
     if leftIdx < rightIdx:
-        pivotIdx = doPartitioning(A, leftIdx, rightIdx, (leftIdx + rightIdx) // 2)
+        # Use left-most element as pivot
+        pivotIdx = doPartitioning(A, leftIdx, rightIdx, leftIdx)
         # Recursively sort elements before and after partition
         quickSortRecurse(A, leftIdx, pivotIdx - 1)
         quickSortRecurse(A, pivotIdx + 1, rightIdx)
