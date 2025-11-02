@@ -1,0 +1,159 @@
+[
+  {
+    "department": "Emergency",
+    "x": 50,
+    "y": 40,
+    "corridors": [
+      {
+        "department": "Reception",
+        "weight": 10
+      },
+      {
+        "department": "ICU",
+        "weight": 5
+      }
+    ]
+  },
+  {
+    "department": "Reception",
+    "x": 30,
+    "y": 30,
+    "corridors": [
+      {
+        "department": "Emergency",
+        "weight": 10
+      },
+      {
+        "department": "Outpatient",
+        "weight": 8
+      },
+      {
+        "department": "Pharmacy",
+        "weight": 12
+      }
+    ]
+  },
+  {
+    "department": "ICU",
+    "x": 60,
+    "y": 50,
+    "corridors": [
+      {
+        "department": "Emergency",
+        "weight": 5
+      },
+      {
+        "department": "Operating Theatre",
+        "weight": 7
+      },
+      {
+        "department": "Radiology",
+        "weight": 15
+      }
+    ]
+  },
+  {
+    "department": "Outpatient",
+    "x": 20,
+    "y": 20,
+    "corridors": [
+      {
+        "department": "Reception",
+        "weight": 8
+      },
+      {
+        "department": "Laboratory",
+        "weight": 6
+      }
+    ]
+  },
+  {
+    "department": "Pharmacy",
+    "x": 40,
+    "y": 20,
+    "corridors": [
+      {
+        "department": "Reception",
+        "weight": 12
+      },
+      {
+        "department": "Laboratory",
+        "weight": 4
+      }
+    ]
+  },
+  {
+    "department": "Laboratory",
+    "x": 25,
+    "y": 10,
+    "corridors": [
+      {
+        "department": "Outpatient",
+        "weight": 6
+      },
+      {
+        "department": "Pharmacy",
+        "weight": 4
+      },
+      {
+        "department": "Radiology",
+        "weight": 9
+      }
+    ]
+  },
+  {
+    "department": "Radiology",
+    "x": 70,
+    "y": 30,
+    "corridors": [
+      {
+        "department": "ICU",
+        "weight": 15
+      },
+      {
+        "department": "Laboratory",
+        "weight": 9
+      },
+      {
+        "department": "Operating Theatre",
+        "weight": 8
+      }
+    ]
+  },
+  {
+    "department": "Operating Theatre",
+    "x": 80,
+    "y": 60,
+    "corridors": [
+      {
+        "department": "ICU",
+        "weight": 7
+      },
+      {
+        "department": "Radiology",
+        "weight": 8
+      },
+      {
+        "department": "Wards",
+        "weight": 12
+      }
+    ]
+  },
+  {
+    "department": "Wards",
+    "x": 90,
+    "y": 40,
+    "corridors": [
+      {
+        "department": "Operating Theatre",
+        "weight": 12
+      }
+    ]
+  },
+  {
+    "department": "Isolated Department",
+    "x": 100,
+    "y": 100,
+    "corridors": []
+  }
+]
